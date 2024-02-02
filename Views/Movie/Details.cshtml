@@ -1,0 +1,58 @@
+﻿@model Movie
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var averageRating = ViewBag.AverageRating ?? "Not Rated";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" rel="stylesheet">
+</head>
+
+<div class="container mt-4 p-5 rounded" style="background-color: #D0E0F3;">
+    <div class="row">
+        <div class="col-md-5">
+            <img src="@Model.ImageUrl" class="img-thumbnail">
+        </div>
+        <div class="col-md-7">
+            <h1 class="display-4">@Model.Title</h1>
+                        <div class="average-rating">
+                            <h3>Average Rating:</h3>
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= Math.Floor(averageRating))
+                                {
+                                    <i class="fas fa-star yellow-star"></i> <!-- Full star for each whole number in averageRating -->
+                                }
+                                else if (i - averageRating <= 0.5)
+                                {
+                                    <i class="fas fa-star-half-alt yellow-star"></i> <!-- Half star if there's a fractional part -->
+                                }
+                                else
+                                {
+                                    <i class="far fa-star yellow-star"></i> <!-- Empty star for the rest -->
+                                }
+                            }
+                        </div>
+            <h3 class="mt-3">Genres:</h3>
+            @foreach (var genre in Model.Genres)
+            {
+                <span class="badge badge-info">@genre</span>
+            }
+            
+            <div class="user-reviews mt-4">
+                <h3>User Reviews:</h3>
+                @foreach (var review in Model.Reviews)
+                {                                     
+                    <div class="user-review">
+                        <strong>@review.User.UserName</strong>: @review.Text
+                    </div>
+                }
+                <a class="btn btn-primary mt-3" asp-controller="Review" asp-action="SubmitForm" asp-route-IdMovie=@Model.IdMovie>Add Review </a>
+                <a class="btn btn-secondary mt-3" asp-action="GetMovies">Go back</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,198 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  margin: 0;
+}
+#main {
+  display: flex;
+  flex: 1;
+  background: #d1efff;
+}
+
+header {
+  background: #50647b;
+  height: 9vh;
+}
+footer {
+  background: #50647b;
+  height: 5vh;
+  color: white; 
+  text-align: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+.user-review {
+  border-bottom: 2px solid #333; 
+  margin-bottom: 15px; 
+  padding-bottom: 10px; 
+}
+
+.card {
+  background-color: #c1e5fb;
+  margin-bottom: 1rem; 
+  border: none;
+  border-radius: .25rem;
+}
+
+.card-footer {
+  background-color: #f8f9fa; 
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+}
+.card-title {
+  margin: 0;
+  font-size: 1rem; 
+  font-weight: 600; 
+}
+
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition for transform and shadow */
+  cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+
+}
+
+.card:hover {
+  transform: scale(1.05); /* Slightly scales up the card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow to lift the card off the page */
+}
+.review-container {
+  background-color: #C6E2F6FF;
+  padding: 2rem;
+  margin-top: 2rem;
+  border-radius: 0.5rem;
+  text-align: center; 
+}
+
+.review-form {
+  margin-top: 2rem;
+}
+
+.radio-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; 
+}
+
+.radio-group input[type="radio"] {
+  transform: scale(1.2); 
+}
+
+.comment-area {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.form-control {
+  height: 400px; 
+}
+
+.btn-group {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between; 
+}
+
+.btn-primary, .btn-secondary {
+  width: 50%; 
+}
+
+.buttons .btn-primary {
+  float: right; 
+}
+
+.buttons .btn-secondary {
+  float : left; 
+}
+
+header, footer {
+  padding: 1em;
+}
+#title-container {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   height: 100%; /* Adjust if needed */
+ }
+
+#form {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto; /* Center the form */
+  flex-grow: 1; /* Allows the form to take up the available space */
+}
+#form input[type="search"] {
+  padding: 5px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  width: 60%; /* Adjust the width as needed */
+  margin-right: 10px; /* Adds some space between the input and the button */
+}
+#form button {
+  padding: 5px 15px;
+  background-color: #f2f2f2;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#form button:hover {
+  background-color: #c9c6c6;
+}
+
+.user-icon-img {
+  height: 50px;
+  margin-left: 10px; /* Gives some space from the edge */
+  border-radius: 25px;
+}
+
+/* Error Page Styles */
+.error-container {
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+
+.error-title {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 0.5em;
+}
+
+.error-message {
+  font-size: 1.2em;
+  color: #666;
+  margin-bottom: 1em;
+}
+
+.error-link {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.error-link:hover {
+  background-color: #5298e1;
+}
+
+.yellow-star {
+  color: #8a8a3e;
+}
+
+
+

@@ -1,0 +1,13 @@
+﻿@model ReviewDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+}
+
+<div class="error-container">
+    <h1 class="error-title">Something went terribly wrong!</h1>
+    <p class="error-message">But don't worry, you can go back and try again.</p>
+    <a class="error-link" asp-controller="Review" asp-action="SubmitForm" asp-route-IdMovie=@Model.Movie.IdMovie >
+        Go back
+    </a>
+</div>

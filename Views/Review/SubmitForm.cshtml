@@ -1,0 +1,31 @@
+﻿@model ReviewDto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<div class="container review-container">
+    <h1>@Model.Movie.Title</h1>
+    <div class="review-form">
+        @using (Html.BeginForm("Add", "Review",new { idMovie = Model.Movie.IdMovie }, FormMethod.Post))
+        {
+            <div class="radio-group">
+                @foreach (Grade grade in Enum.GetValues(typeof(Grade)))
+                {
+                    <label>
+                        @Html.RadioButtonFor(m => m.Grade, grade.ToString()) @grade.ToString()
+                    </label>
+                }
+            </div>
+            <div class="comment-area">
+                @Html.TextAreaFor(m => m.Opinion, new { @class = "form-control" })
+            </div>
+            <div class="buttons">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-controller="Movie" asp-action="Details" asp-route-IdMovie=@Model.Movie.IdMovie>Cancel</a>
+            </div>
+        }
+    </div>
+</div>
