@@ -11,11 +11,10 @@ namespace MoviePlatform.Service
         public IReadOnlyCollection<Review> GetReviewsOfUser(int idUser);
         public Task<List<Review>> GetReviewsOfMovieAsync(int idMovie);
         public Review GetReview(int idReview);
-        public Task<bool> AddReview(ReviewDto review);
         public void UpdateReview(Review review);
         public void DeleteReview(int reviewId);
         public void Save();
-        Task<double> GetAverageRatingForMovieAsync(int idMovie);
+        public Task<bool> AddReview(string opinion, string grade, int idMovie, int idUser);
     }
     public class ReviewRepository : IReviewRepository
     {
@@ -43,7 +42,6 @@ namespace MoviePlatform.Service
             {
                 review.User = await _userRepository.GetUserAsync(review.IdUser);
             }
-
             return Reviews;
         }
 
@@ -55,37 +53,42 @@ namespace MoviePlatform.Service
             }
             return Context.Reviews.First(x => x.IdReview == idReview);
         }
-
-        public async Task<bool> AddReview(ReviewDto review)
+        
+        public async Task<bool> AddReview(string opinion, string grade, int idMovie, int idUser)
         {
-            if (!Context.Users.Any(r => r.IdUser == 1) || !Context.Movies.Any(m => m.IdMovie == review.Movie.IdMovie))
+            var movieExists = await Context.Movies.AnyAsync(m => m.IdMovie == idMovie);
+            var userExists = await Context.Users.AnyAsync(u => u.IdUser == 1); 
+            if (!movieExists || !userExists)
             {
                 Console.WriteLine("Given user or movie doesn't exist");
                 return false;
             }
-            if (string.IsNullOrEmpty(review.Opinion) || review.Opinion.Length < 3)
+
+            if (string.IsNullOrEmpty(opinion) || opinion.Length < 3)
             {
-                Console.WriteLine("Opinion is too short. Minimum length of 3 character is required.");
+                Console.WriteLine("Opinion is too short. Minimum length of 3 characters is required.");
                 return false;
             }
-            using (var dbContextTransaction = Context.Database.BeginTransaction())
+
+            using (var dbContextTransaction = await Context.Database.BeginTransactionAsync())
             {
                 try
                 {
-                    Grade myEnum = (Grade)Enum.Parse(typeof(Grade), review.Grade);
-                    await Context.Reviews.AddAsync(new Review { Text = review.Opinion, Grade = myEnum, IdUser = 1, IdMovie = review.Movie.IdMovie, CreationDate = DateTime.UtcNow });
-                    Save();
+                    Grade myEnum = (Grade)Enum.Parse(typeof(Grade), grade);
+                    var review = new Review { Text = opinion, Grade = myEnum, IdUser = 1, IdMovie = idMovie, CreationDate = DateTime.UtcNow };
+                    await Context.Reviews.AddAsync(review);
+                    await Context.SaveChangesAsync();
 
-                    dbContextTransaction.Commit();
+                    await dbContextTransaction.CommitAsync();
                     return true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    dbContextTransaction.Rollback();
+                    await dbContextTransaction.RollbackAsync();
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    return false;
                 }
             }
-
-            return false;
         }
 
 
@@ -122,18 +125,6 @@ namespace MoviePlatform.Service
             }
             return true;
         }
-        public async Task<double> GetAverageRatingForMovieAsync(int idMovie)
-        {
-            var reviews = await Context.Reviews.Where(r => r.IdMovie == idMovie).ToListAsync();
-            if (!reviews.Any())
-            {
-                return 0; // No reviews found for the movie
-            }
-
-            double totalRating = reviews.Sum(review => (int)review.Grade);
-            return totalRating / reviews.Count; // Calculate average
-        }
-
         public void Save()
         {
             Context.SaveChanges();

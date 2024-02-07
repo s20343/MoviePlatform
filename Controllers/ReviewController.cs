@@ -9,7 +9,7 @@ namespace MoviePlatform.Controllers
     {
         private readonly IReviewRepository _reviewRepository;
         private readonly IMovieRepository _movieRepository;
-        //private static Movie _movie;
+
 
         public ReviewController(IReviewRepository reviewRepository, IMovieRepository movieRepository)
         {
@@ -20,17 +20,16 @@ namespace MoviePlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(string opinion, string grade, int idMovie)
         {
-            var movie = await _movieRepository.GetMovieAsync(idMovie);
-            ReviewDto review = new ReviewDto { Movie = movie, Grade = grade, Opinion = opinion };
             if (ModelState.IsValid)
             {
-                bool isAdded = await _reviewRepository.AddReview(review);
+                bool isAdded = await _reviewRepository.AddReview(opinion, grade, idMovie, 1);
                 if (isAdded)
                 {
                     return RedirectToAction("Details", "Movie", new { idMovie });
                 } 
             }
-            return View("Error", review);
+            var reviewDto = new ReviewDto { Movie = new Movie { IdMovie = idMovie }, Opinion = opinion, Grade = grade };
+            return View("Error", reviewDto);
         }
   
         [HttpGet]

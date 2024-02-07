@@ -14,6 +14,7 @@ namespace MoviePlatform.Service
         public void UpdateMovie(Movie movie);
         public void DeleteMovie(int personId);
         public void Save();
+        public Task<(Movie movie, double averageRating)> GetMovieWithReviewsAsync(int idMovie);
     }
     public class MovieRepository : IMovieRepository
     {
@@ -23,6 +24,19 @@ namespace MoviePlatform.Service
             Context = context;
         }
 
+        
+        public async Task<(Movie movie, double averageRating)> GetMovieWithReviewsAsync(int idMovie)
+        {
+            var movie = await Context.Movies
+                .Include(m => m.Reviews)
+                .ThenInclude(r => r.User)
+                .FirstAsync(m => m.IdMovie == idMovie);
+
+            double averageRating = movie.Reviews.Any() ? movie.Reviews.Average(r => (double)r.Grade) : 0;
+
+            return (movie, averageRating);
+        }
+ 
         public async Task<List<Movie>> GetMoviesAsync()
         {
             return await Context.Movies.ToListAsync();

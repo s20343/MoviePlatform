@@ -24,13 +24,10 @@ namespace MoviePlatform.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int idMovie)
         {
-            var movie = await _movieRepository.GetMovieAsync(idMovie);
-            movie.Reviews = await _reviewRepository.GetReviewsOfMovieAsync(idMovie);
-            var averageRating = await _reviewRepository.GetAverageRatingForMovieAsync(idMovie);
+            var (movie, averageRating) = await _movieRepository.GetMovieWithReviewsAsync(idMovie);
             ViewBag.AverageRating = averageRating;
 
             return View(movie);
-            
         }
     }
 }
