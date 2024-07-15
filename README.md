@@ -28,21 +28,6 @@ Important note: one person can be the director, writer and actor of the movie at
 
 
 6.Use case description
-Add review
-   a.	Actors
-     Logged in user
-
-   b.	Purpose and context
-     Logged in user wants to review the movie
-
-   c.	Dependences
-     i.	Included use-cases
-     None
-     ii.	Extended use-cases
-     None
-
-d.	Assumptions and pre-conditions
-  User is logged in and viewing the list of movies
 
 e.	Basic flow of event 
   1.	User picks a movie from the list
