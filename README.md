@@ -1,6 +1,4 @@
-Movie review platform
-Batuhan Seyhan S20343
-Github link
+
 
 
 
